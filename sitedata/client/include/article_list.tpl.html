@@ -1,0 +1,47 @@
+<div class="article_list">
+
+    <p data-ng-hide="route=='starred'">
+        <button data-ng-click="select_all()">全选</button>
+        <button data-ng-click="select_none()">不选</button>
+    </p>
+
+    <ul id="article_list">
+        <li data-ng-repeat="item in data.Articles">
+            <input type="checkbox" value="{{item.item_id}}" data-ng-hide="route=='starred'">
+            <span data-ng-if="item.item_starred==true" class="fa fa-star star" title="去星" data-ng-click="markStarred(false, item.item_id)"></span>
+            <span data-ng-if="item.item_starred==false" class="fa fa-star-o star-o" title="加星" data-ng-click="markStarred(true, item.item_id)"></span>
+
+            <span data-ng-if="item.item_title==''" data-ng-init="item.item_title='（无标题）'"></span>
+            <span data-ng-if="item.item_pub_time.substr(0,3)!='000'" data-ng-init="item.item_time=item.item_pub_time; item.item_time_title='发表时间';"></span>
+            <span data-ng-if="item.item_pub_time.substr(0,3)=='000'" data-ng-init="item.item_time=item.item_fetch_time; item.item_time_title='抓取时间';"></span>
+
+            <a href="/#/article/{{item.item_id}}" data-ng-bind-html="item.item_title" title="{{item.item_time_title}}：{{item.item_time | date:'yyyy-MM-dd HH:mm Z'}}"></a>
+
+            <span data-ng-if="route!='fid' && item.feed_alias!=''">
+                （<a href="/#/articles/fid/{{item.item_fid}}?page=1" data-ng-bind-html="item.feed_alias"></a>）
+            </span>
+            <span data-ng-if="route!='fid' && item.feed_alias==''">
+                （<a data-ng-if="item.feed_alias==''" href="/#/articles/fid/{{item.item_fid}}?page=1" data-ng-bind-html="item.feed_name"></a>）
+            </span>
+        </li>
+    </ul>
+
+    <p data-ng-hide="route=='starred'">
+        <button data-ng-click="markRead('page')">将本页标为已读</button>
+        <button data-ng-click="markRead('selected')">将已选标为已读</button>
+        <button data-ng-if="route=='fid'" data-ng-click="markRead('feed')">将此feed标为已读</button>
+        <button data-ng-if="route=='tag'" data-ng-click="markRead('tag')">将此标签标为已读</button>
+    </p>
+
+    <p data-ng-cloak class="ng-cloak">
+        <span data-ng-hide="route=='random'">
+            <span data-ng-if="data.page > 1"><a href="{{pagelinkPrefix}}?page={{data.page-1}}">上一页</a></span>
+            <span data-ng-if="data.page <= 1"><a href="{{pagelinkPrefix}}?page={{data.pagenum}}">上一页</a></span>
+        </span>
+        <span data-ng-hide="route=='random'">第{{data.page}}页/共{{data.pagenum}}页/</span>共{{data.Number}}条
+        <span data-ng-hide="route=='random'">
+            <span data-ng-if="data.page >= data.pagenum"><a href="{{pagelinkPrefix}}?page=1">下一页</a></span>
+            <span data-ng-if="data.page < data.pagenum"><a href="{{pagelinkPrefix}}?page={{data.page+1}}">下一页</a></span>
+        </span>
+    </p>
+</div>

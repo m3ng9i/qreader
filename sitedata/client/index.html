@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html lang='zh-cn' data-ng-app="QReader">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1,width=device-width">
+    <script type="text/javascript" src="libs/angular-1.3.15.min.js"></script>
+    <script type="text/javascript" src="libs/angular-route-1.3.15.min.js"></script>
+    <script type="text/javascript" src="libs/angular-sanitize-1.3.15.min.js"></script>
+    <script type="text/javascript" src="libs/forge-0.6.21.min.js"></script>
+    <script type="text/javascript" src="libs/mousetrap1.4.6-min.js"></script>
+    <script type="text/javascript" src="include/utils.js"></script>
+    <script type="text/javascript" src="include/qreader.auth.js"></script>
+    <script type="text/javascript" src="include/qreader.js"></script>
+    <link rel="stylesheet" type="text/css" href="libs/normalize-3.0.2.css">
+    <link rel="stylesheet" type="text/css" href="libs/font-awesome-4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="include/style.css">
+    <title>QReader</title>
+</head>
+
+<body>
+
+    <div id="loading">
+        <div>
+            <span class="fa fa-refresh fa-spin"></span>
+            <span>加载中</span>
+        </div>
+    </div>
+
+    <div id="error" onclick="this.style.display='none'"><div></div></div>
+
+    <div id="container">
+
+        <header>
+            <nav data-ng-controller="NavController">
+                <ul>
+                <li>[QReader]</li>
+                <li><a href="/#/articles/unread"><span class="fa fa-home fa-fw"></span>首页</a></li>
+                <li><a href="/#/feed/list"><span class="fa fa-list fa-fw"></span>订阅</a></li>
+                <li><a href="/#/tags/list"><span class="fa fa-tags fa-fw"></span>标签</a></li>
+                <li><a href="/#/articles/starred"><span class="fa fa-star fa-fw"></span>加星</a></li>
+                <li><a href="/#/articles/random/"><span class="fa fa-random fa-fw"></span>随机</a></li>
+                <li><a href="/#/settings"><span class="fa fa-cog fa-fw"></span>系统</a></li>
+                <li><a data-ng-click="reload()"><span class="fa fa-refresh fa-fw"></span>刷新</a></li>
+                <li><a data-ng-click="logout()"><span class="fa fa-sign-out fa-fw"></span>退出</a></li>
+                </ul>
+            </nav>
+
+            <h1 id="title"></h1>
+        </header>
+
+        <div ng-view id="view">QReader 并不不支持你使用的浏览器，建议选择 Google Chrome、Mozilla Firefox、Safari 或 Opera。</div>
+
+        <div id="gotop" onclick="document.body.scrollTop=0;"><span class="fa fa-angle-up"></span></div>
+
+        <footer>
+            <a href="https://github.com/m3ng9i/QReader?from=webclient" target="_blank">- QReader -</a>
+        </footer>
+
+    </div>
+
+</body>
+
+</html>
+

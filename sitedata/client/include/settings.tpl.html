@@ -1,0 +1,133 @@
+<div id="settings" data-ng-hide="data==null">
+
+
+    <table>
+
+        <tr>
+            <th colspan="2">系统状态</th>
+        </tr>
+
+        <tr>
+            <td>状态</td>
+            <td>{{status}}</td>
+        </tr>
+
+        <tr>
+            <td>Api token</td>
+            <td>{{token}}</td>
+        </tr>
+
+        <tr>
+            <th colspan="2">版本信息</th>
+        </tr>
+
+        <tr>
+            <td>版本</td>
+            <td>{{data.Version.Version}}</td>
+        </tr>
+
+        <tr>
+            <td>分支</td>
+            <td>{{data.Version.Branch}}</td>
+        </tr>
+
+        <tr>
+            <td>版本号</td>
+            <td>{{data.Version.CommitId}}</td>
+        </tr>
+
+        <tr>
+            <td>编译时间</td>
+            <td>{{data.Version.BuildTime}}</td>
+        </tr>
+
+        <tr>
+            <th colspan="2">数据统计</th>
+        </tr>
+
+        <tr>
+            <td>订阅feed</td>
+            <td>{{data.Summary.feed}}个</td>
+        </tr>
+
+        <tr>
+            <td>保存文章</td>
+            <td>{{data.Summary.amounts}}篇</td>
+        </tr>
+
+        <tr>
+            <td>未读</td>
+            <td>{{data.Summary.unread}}篇</td>
+        </tr>
+
+        <tr>
+            <td>加星</td>
+            <td>{{data.Summary.starred}}篇</td>
+        </tr>
+
+        <tr>
+            <td>总计抓取</td>
+            <td>{{data.Summary.grabbed}}篇</td>
+        </tr>
+
+        <tr>
+            <td>数据库文件大小</td>
+            <td>{{data.Summary.dbsize | ReadableFilesize}}</td>
+        </tr>
+
+        <tr>
+            <th colspan="2">系统配置 （注*）</th>
+        </tr>
+
+        <tr>
+            <td>系统数据目录</td>
+            <td>{{data.SystemInfo.PathRoot}}</td>
+        </tr>
+
+        <tr>
+            <td>服务器IP</td>
+            <td>{{data.SystemInfo.IP}}</td>
+        </tr>
+
+        <tr>
+            <td>http服务端口</td>
+            <td>{{data.SystemInfo.Port}}</td>
+        </tr>
+
+        <tr>
+            <td>使用tls加密</td>
+            <td><span data-ng-if="data.SystemInfo.Usetls">是</span><span data-ng-if="data.SystemInfo.Usetls==false">否</span></td>
+        </tr>
+
+        <tr>
+            <td>使用代理获取feed</td>
+            <td>{{data.SystemInfo.UseProxy}}</td>
+        </tr>
+
+        <tr data-ng-if="data.ProxyAddr">
+            <td>Socks5代理服务器</td>
+            <td>{{data.SystemInfo.ProxyAddr}}</td>
+        </tr>
+
+        <tr>
+            <td>是否开启debug</td>
+            <td><span data-ng-if="data.SystemInfo.Debug">是</span><span data-ng-if="data.SystemInfo.Debug==false">否</span></td>
+        </tr>
+
+    </table>
+
+
+    <p>注*：如需要修改系统配置，请编辑配置文件，重启 QReader 后生效。</p>
+   
+    <h1>其他配置</h1>
+    <form data-ng-submit="save()">
+        <p>
+            每页条目数量：<input type="number" min="1" data-ng-model="settings.page_item_number" required="required">
+            <button type="submit">保存</button>
+            <button data-ng-click="cancel()" type="button"">撤销</button>
+        </p>
+    </form>
+    <p><button data-ng-click="shutdown()">关闭 QReader 服务器</button></p>
+
+
+</div>

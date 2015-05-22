@@ -1,0 +1,29 @@
+#container {
+    width: 95%;
+    margin:10px auto;
+}
+
+#error {
+    width:100%;
+    left:0px;
+    right:0px;
+    display: none;
+    cursor: pointer;
+}
+
+#error > div {
+    margin: 0 auto;
+    border: 1px rgb(249,145,145) solid;
+    background-color: rgb(255,228,228);
+    padding: 10px;
+    border-radius: 4px;
+    opacity: 0.9;
+}
+
+button {
+    font-size:0.9em;
+}
+
+h1 {
+    font-size: 2em;
+}

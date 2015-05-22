@@ -1,0 +1,48 @@
+<div id="subscription">
+    feed地址： <input type="url" data-ng-init="url='http://'" data-ng-model="url">
+    <button data-ng-click="subscribe()">订阅</button>
+    <button data-ng-click="isSubscribed()">查询是否已订阅</button>
+</div>
+
+<div id="feedlist" data-ng-hide="data==null">
+    <table>
+        <tr data-ng-model="colName">
+            <th data-ng-click="sortIndicatorChagne('feed_id');">ID <span class="{{cols.feed_id}}"></span></th>
+            <th data-ng-click="sortIndicatorChagne('feed_name');">feed名称或别名 <span class="{{cols.feed_name}}"></span></th>
+            <th data-ng-click="sortIndicatorChagne('amount');">文章数 <span class="{{cols.amount}}"></span></th>
+            <th data-ng-click="sortIndicatorChagne('unread');">未读 <span class="{{cols.unread}}"></span></th>
+            <th data-ng-click="sortIndicatorChagne('starred');">加星 <span class="{{cols.starred}}"></span></th>
+            <th data-ng-click="sortIndicatorChagne('feed_last_fetch');">上次获取时间 <span class="{{cols.feed_last_fetch}}"></span></th>
+            <th data-ng-click="sortIndicatorChagne('feed_last_failed');">上次失败时间 <span class="{{cols.feed_last_failed}}"></span></th>
+            <th>操作</th>
+        </tr>
+        <tr data-ng-repeat="feed in data | orderBy:colName:reverse">
+            <td>{{feed.feed_id}}</td>
+            <td>
+                <a data-ng-if="feed.feed_alias!=''" href="/#/articles/fid/{{feed.feed_id}}" data-ng-bind-html="feed.feed_alias"></a>
+                <a data-ng-if="feed.feed_alias==''" href="/#/articles/fid/{{feed.feed_id}}" data-ng-bind-html="feed.feed_name"></a>
+            </td>
+            <td>{{feed.amount}}</td>
+            <td>{{feed.unread}}</td>
+            <td>{{feed.starred}}</td>
+            <td>
+                <span title="{{feed.feed_last_fetch | date:'yyyy-MM-dd HH:mm Z'}}">
+                    {{feed.feed_last_fetch | date:"yyyy-MM-dd HH:mm"}}
+                </span>
+            </td>
+            <td>
+                <span data-ng-hide="feed.feed_last_failed.substring(0,3)=='000'" title="{{feed.feed_last_failed | date:'yyyy-MM-dd HH:mm Z'}}">
+                    {{feed.feed_last_failed | date:"yyyy-MM-dd HH:mm"}}
+                </span>
+            </td>
+            <td>
+                <button data-ng-click="info(feed.feed_id)" title="查看feed详情">详</button>
+                <button data-ng-click="delete(feed.feed_id, feed.feed_name)" title="删除feed">删</button>
+                <button data-ng-click="update(feed.feed_id);" title="手动更新">更</button>
+                <button data-ng-click="markread(feed.feed_id, feed.feed_name);" title="全部标记为已读">读</button>
+            </td>
+        </tr>
+    </table>
+
+    <p class="notice">由于你的屏幕宽度过小，上表中的部分字段已经被隐藏。</p>
+</div>

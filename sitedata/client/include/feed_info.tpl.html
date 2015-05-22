@@ -1,0 +1,124 @@
+<div id="feedinfo" data-ng-hide="data==null">
+
+    <header>
+        <p data-ng-bind-html="data.feed_desc"></p>
+        <p>保存：{{data.Amounts}}篇<br>已读：{{data.Read}}篇<br>未读：{{data.Unread}}篇<br>加星：{{data.Starred}}篇</p>
+    </header>
+
+    <form data-ng-submit="save()">
+        <table>
+
+            <tr>
+                <th>ID</th>
+                <td>{{data.feed_id}}</td>
+            </tr>
+
+            <tr>
+                <th>网站地址</th>
+                <td><a href="{{data.feed_url}}">{{data.feed_url}}</a></td>
+            </tr>
+
+            <tr>
+                <th>类型</th>
+                <td>{{data.feed_type}}</td>
+            </tr>
+
+            <tr>
+                <th>上次获取时间</th>
+                <td>{{data.feed_last_fetch | date:"yyyy-MM-dd HH:mm Z"}}</td>
+            </tr>
+
+            <tr data-ng-hide="data.feed_last_failed.substring(0,3)=='000'">
+                <th>上次获取失败时间</th>
+                <td>{{data.feed_last_failed | date:"yyyy-MM-dd HH:mm Z"}}</td>
+            </tr>
+
+            <tr data-ng-hide="data.feed_last_error==''">
+                <th>上次获取失败描述</th>
+                <td>{{data.feed_last_error}}</td>
+            </tr>
+
+            <tr>
+                <th>feed地址</th>
+                <td>
+                    <input type="url" name="feedurl" data-ng-model="data.feed_feed_url" placeholder="请输入feed地址">
+                    <span class="fa fa-pencil pull-right"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <th>标签</th>
+                <td>
+                    <input type="text" name="tags" data-ng-model="data.Tags" placeholder="请使用英文逗号分隔多个标签">
+                    <span class="fa fa-pencil pull-right"></span>
+                </td>
+            </tr>
+
+            <tr title="设置feed自动更新周期。0：默认更新周期；负数：暂停更新此feed。">
+                <th>更新周期（分钟）</th>
+                <td>
+                    <input type="number" name="interval" data-ng-model="data.feed_interval" placeholder="0：默认更新周期；负数：暂停更新此feed">
+                    <span class="fa fa-pencil pull-right"></span>
+                </td>
+            </tr>
+
+            <tr title="已读数量超过此数字后，较早的已读文章会被自动删除。如果要保留所有文章，请填0。">
+                <th>最大已读保留数</th>
+                <td>
+                    <input type="number" name="max_keep" min="0" data-ng-model="data.feed_max_keep" placeholder="0：保留所有">
+                    <span class="fa fa-pencil pull-right"></span>
+                </td>
+            </tr>
+
+            <tr title="未读数量超过此数字后，较早的未读文章会被自动设置为已读。如果不需要自动将文章标记为已读，请填0。">
+                <th>最大未读保留数</th>
+                <td>
+                    <input type="number" name="max_unread" min="0" data-ng-model="data.feed_max_unread" placeholder="0：不自动将文章标记为已读">
+                    <span class="fa fa-pencil pull-right"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <th>别名</th>
+                <td>
+                    <input type="text" name="alias" data-ng-model="data.feed_alias">
+                    <span class="fa fa-pencil pull-right"></span>
+                </td>
+            </tr>
+
+            <tr>
+                <th>备注</th>
+                <td>
+                    <input type="text" name="note" data-ng-model="data.feed_note">
+                    <span class="fa fa-pencil pull-right"></span>
+                </td>
+            </tr>
+
+            <!-- not to use now
+            <tr>
+                <th>过滤器</th>
+                <td>{{data.feed_filter}}</td>
+            </tr>
+            -->
+
+            <!-- not to use now
+            <tr>
+                <th>代理服务器</th>
+                <td>
+                    <span data-ng-if="data.feed_use_proxy==0">try</span>
+                    <span data-ng-if="data.feed_use_proxy==1">always</span>
+                    <span data-ng-if="data.feed_use_proxy==2">never</span>
+                </td>
+            </tr>
+            -->
+
+        </table>
+
+        <div class="button">
+            <button type="submit">保存</button>
+            <button data-ng-click="cancel()">撤销</button>
+        </div>
+
+    </form>
+
+</div>

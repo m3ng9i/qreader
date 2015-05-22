@@ -1,0 +1,341 @@
+#container {
+    width: 95%;
+    margin:10px auto;
+}
+
+#container > header > nav {
+    font-size: 0.9em;
+    padding:10px 0;
+    border-bottom: 1px #f0f0f0 solid;
+}
+
+#container > header > nav ul {
+    padding: 0;
+    margin: 0;
+}
+
+#container > header > nav li {
+    display: inline;
+    list-style-type: none;
+    line-height:1.8em;
+}
+
+#container > header > nav span {
+    padding-right: 0.3em;
+}
+
+#container > header > nav a {
+    text-decoration: none;
+    cursor: pointer;
+    color: #336699;
+    padding:12px 6px;
+    white-space: nowrap;
+}
+
+#container > header > nav a:hover {
+    color:white;
+    background-color: #F5219A;
+}
+
+#container > header > h1 > a {
+    text-decoration: none;
+}
+
+#container > header > h1 > a:hover {
+    color: rgb(245, 33, 154);
+}
+
+#container article > header > h1 {
+    font-size: 2em;
+}
+
+#container article > div.content {
+    font-size: 1em;
+}
+
+#container article > div.content {
+    line-height: 1.5em;
+}
+
+#container article > div.content img {
+    max-width: 95vw;
+}
+
+#container div.article_list ul {
+    list-style: none;
+    padding: 0px;
+}
+
+#container div.article_list li {
+    font-size: 1em;
+    line-height: 1.4em;
+}
+
+#container > footer {
+    text-align:center;
+    padding:0.5em;
+    margin-top:1em;
+}
+
+#container > footer a {
+    color: #888888;
+    font-size: 0.8em;
+    text-decoration: none;
+}
+
+#container > footer a:hover {
+    color: #F5219A;
+}
+
+#error {
+    position: fixed;
+    z-index:200;
+    width:100%;
+    left:0px;
+    right:0px;
+    display: none;
+    cursor: pointer;
+}
+
+#error > div {
+    width: calc(100% - 60px);
+    margin: 0 auto;
+    border: 1px rgb(249,145,145) solid;
+    background-color: rgb(255,228,228);
+    padding: 10px;
+    border-radius: 4px;
+    opacity: 0.9;
+}
+
+#view td, #view th {
+    padding: 0.4em 0.5em;
+    border:1px #dddddd solid;
+    font-size: 0.9em;
+}
+#view tr:hover {
+    background-color: #f8f8f8;
+}
+
+#view > div h1 {
+    font-size:1.5em;
+    line-height:1.5em;
+}
+
+#view a {
+    text-decoration:none;
+}
+
+#view a:hover {
+    color:rgb(245, 33, 154);
+}
+
+#subscription {
+    margin:1em 0px;
+}
+
+#subscription div.result {
+    margin:1em 0px;
+    font-size: 0.9em;
+}
+
+#feedlist table {
+    width: 100%;
+}
+
+#feedlist table th {
+    cursor: pointer;
+}
+
+#feedlist table td:nth-child(1) {
+    width: 2.3em;
+    text-align: right;
+}
+
+#feedlist table td:nth-child(3) {
+    width: 5em;
+    text-align: right;
+}
+
+#feedlist table td:nth-child(4), #feedlist table td:nth-child(5) {
+    width: 4em;
+    text-align: right;
+}
+
+#feedlist table td:nth-child(6), #feedlist table td:nth-child(7) {
+    width: 9em;
+    text-align: center;
+}
+
+#feedlist table td:nth-child(8) {
+    width: 10em;
+    text-align: center;
+}
+
+#feedlist .notice {
+    display: none;
+}
+
+@media screen and (max-width: 1000px) {
+    /* hide last failed column */
+    #feedlist table tr > *:nth-child(7) {
+        display: none;
+    }
+
+    #feedlist .notice {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 850px) {
+    /* hide starred column */
+    #feedlist table tr > *:nth-child(5) {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 750px) {
+    /* hide amount column */
+    #feedlist table tr > *:nth-child(3) {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 680px) {
+    /* hide lastfetch column */
+    #feedlist table tr > *:nth-child(6) {
+        display: none;
+    }
+
+    #container > header > nav > ul > li:nth-child(1) {
+        display: none;
+    }
+
+    #container > header > nav a {
+        padding:5px 2px;
+    }
+
+    #container > header > nav li {
+        line-height: 1.5em;
+        padding:12px 6px;
+    }
+
+}
+
+@media screen and (max-width: 550px) {
+    /* hide id column */
+    #feedlist table tr > *:nth-child(1) {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    /* hide unread column */
+    #feedlist table tr > *:nth-child(4) {
+        display: none;
+    }
+}
+
+#feedinfo {
+    width: 100%;
+}
+
+#feedinfo > header p {
+    line-height:1.5em;
+}
+
+#feedinfo > form {
+    width: 100%;
+}
+
+#feedinfo > form table {
+    margin: 0 auto 1em auto;
+    width: 100%;
+}
+
+#feedinfo > form table th {
+    text-align:left;
+}
+
+#feedinfo > form table th {
+    width: 9em;
+}
+
+#feedinfo > form table td {
+    width: calc(100% - 8em);
+}
+
+#feedinfo > form table input {
+    border:none;
+    background-color: transparent;
+    width: calc(100% - 2em);
+    margin:0;
+    padding:0;
+}
+
+#feedinfo > form div.button {
+    text-align: center;
+}
+
+#tagslist li {
+    line-height:0.5em;
+}
+
+#gotop {
+    position:           fixed;
+    right:              2%;
+    bottom:             2%;
+    z-index:            1000;
+    border:             1px #bdbdbd solid;
+    text-align:         center;
+    width:              30px;
+    height:             30px;
+    font-size:          22px;
+    color:              #222222;
+    background-color:   rgba(255,255,255,0.85);
+    cursor:             pointer;
+}
+
+#gotop:hover {
+    background-color: rgba(15,15,15,0.9);
+    color: #f0f0f0;
+    border: 1px #f0f0f0 solid;
+}
+
+.ng-cloak {
+    display: none !important;
+}
+
+button {
+    font-size:0.9em;
+}
+
+.star {
+    color:rgb(249,208,0);
+    cursor: pointer;
+}
+
+.star-o {
+    color:rgb(175,132,106);
+    cursor: pointer;
+}
+
+h1 .star, h1 .star-o {
+    font-size: 0.7em;
+}
+
+#loading {
+    position: fixed;
+    left:0;
+    top:0;
+    background-color: rgba(255,255,255,0.85);
+    z-index: 2000;
+    width:100%;
+    height:100%;
+    display: none;
+}
+#loading > div {
+    font-size:1.5em;
+    position: relative;
+    top: 42%;
+    text-align: center;
+}

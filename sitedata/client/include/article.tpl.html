@@ -1,0 +1,33 @@
+<article data-ng-hide="data==null">
+    <header>
+        <h1>
+            <span data-ng-if="data.item_starred==true" class="fa fa-star star" title="去星" data-ng-click="markStarred(false)"></span><span data-ng-if="data.item_starred==false" class="fa fa-star-o star-o" title="加星" data-ng-click="markStarred(true)"></span>
+            <span data-ng-if="data.item_read==false">（未读）</span><span data-ng-bind-html="data.item_title"></span>
+        </h1>
+        <p>
+            <span data-ng-if="data.feed_alias!=''">
+                <a href="/#/articles/fid/{{data.feed_id}}?page=1" data-ng-bind-html="data.feed_alias"></a>
+            </span>
+            <span data-ng-if="data.feed_alias==''">
+                <a href="/#/articles/fid/{{data.feed_id}}?page=1" data-ng-bind-html="data.feed_name"></a>
+            </span>
+
+            <span data-ng-hide="data.item_author==''">by {{data.item_author}}</span>
+
+            <span data-ng-if="data.item_pub_time.substr(0,3)!='000'">
+                (<time datetime="{{data.item_pub_time}}" pubdate title="抓取时间：{{data.item_fetch_time | date:'yyyy-MM-dd HH:mm Z'}}">{{data.item_pub_time | date:"yyyy-MM-dd HH:mm Z"}}</time>)
+            </span>
+            <span data-ng-if="data.item_pub_time.substr(0,3)=='000'">
+                (<time datetime="{{data.item_fetch_time}}" pubdate title="原文未提供发表时间，此为抓取时间">{{data.item_fetch_time | date:"yyyy-MM-dd HH:mm Z"}}</time>)
+            </span>
+        </p>
+        <p>原文地址：<a href="{{data.item_url}}" rel="nofollow">{{data.item_url}}</a></p>
+    </header>
+    <div class="content" data-ng-bind-html="data.item_content"></div>
+    <p>
+        <button data-ng-if="data.item_starred==true" data-ng-click="markStarred(false)">去星</button>
+        <button data-ng-if="data.item_starred==false" data-ng-click="markStarred(true)">加星</button>
+        <button data-ng-if="data.item_read==true" data-ng-click="markRead(false)">标为未读</button>
+        <button data-ng-if="data.item_read==false" data-ng-click="markRead(true)">标为已读</button>
+    </p>
+</article>

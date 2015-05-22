@@ -1,0 +1,17 @@
+<div data-ng-hide="data==null" id="tagslist">
+
+    <div><input type="checkbox" ng-model="getall" data-ng-click="showall();"> 显示所有feed</div>
+
+    <div data-ng-repeat="(key, value) in data">
+        <h1 data-ng-if="key==''">无标签 ({{sum[key]}})</h1>
+        <h1 data-ng-if="key!=''"><a href="/#/articles/tag/{{key}}">{{key}} ({{sum[key]}})</a></h1>
+        <ul data-ng-repeat="feed in value">
+            <li>
+                <a data-ng-if="feed.feed_alias!=''" href="/#/articles/fid/{{feed.feed_id}}">{{feed.feed_alias}}</a>
+                <a data-ng-if="feed.feed_alias==''" href="/#/articles/fid/{{feed.feed_id}}">{{feed.feed_name}}</a>
+                 ({{feed.unread}})
+            </li>
+        </ul>
+    </div>
+
+</div>
