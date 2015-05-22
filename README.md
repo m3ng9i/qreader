@@ -198,7 +198,4 @@ ctrl+right, command+right 或 n  | 下一页
 以下 Go 模块来自我写的 feedreader 和 go-utils 包：
 
 - RSS 和 Atom 解析：[feedreader](https://github.com/m3ng9i/feedreader)
-- 日志记录：[log](https://github.com/m3ng9i/go-utils/log)
-- 生成 Token：[timeslot](https://github.com/m3ng9i/go-utils/timeslot)
-- HTTP 助手：[http](https://github.com/m3ng9i/go-utils/http)
-
+- Go 工具包：[go-utils](https://github.com/m3ng9i/go-utils)
