@@ -7,9 +7,9 @@ import "strings"
 import "sync"
 import "github.com/go-martini/martini"
 import httphelper "github.com/m3ng9i/go-utils/http"
-import "../api"
-import "../global"
-import "../utils"
+import "github.com/m3ng9i/qreader/api"
+import "github.com/m3ng9i/qreader/global"
+import "github.com/m3ng9i/qreader/utils"
 
 
 // Generate a request id for each request.

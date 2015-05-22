@@ -4,7 +4,7 @@ import "fmt"
 import "strings"
 import dbsql "database/sql"
 import "github.com/go-xorm/xorm"
-import "../global"
+import "github.com/m3ng9i/qreader/global"
 
 
 // Get number of subscribed feed.

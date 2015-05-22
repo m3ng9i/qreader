@@ -4,8 +4,8 @@ import "os"
 import "net/http"
 import "github.com/go-martini/martini"
 import httphelper "github.com/m3ng9i/go-utils/http"
-import "../global"
-import "../model"
+import "github.com/m3ng9i/qreader/global"
+import "github.com/m3ng9i/qreader/model"
 
 
 func Settings() martini.Handler {

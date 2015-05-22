@@ -1,7 +1,7 @@
 package model
 
 import "os"
-import "../global"
+import "github.com/m3ng9i/qreader/global"
 
 
 // Get size of sqlite3 database file.

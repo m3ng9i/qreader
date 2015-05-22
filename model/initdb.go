@@ -1,7 +1,7 @@
 package model
 
 import "bytes"
-import "../global"
+import "github.com/m3ng9i/qreader/global"
 
 // SQL script for create tables.
 const createTablesSql = `

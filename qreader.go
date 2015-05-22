@@ -9,11 +9,11 @@ import "strings"
 import "net/http"
 import "syscall"
 import "path/filepath"
-import "./global"
-import "./model"
-import "./utils"
-import "./server"
 import "github.com/toqueteos/webbrowser"
+import "github.com/m3ng9i/qreader/global"
+import "github.com/m3ng9i/qreader/model"
+import "github.com/m3ng9i/qreader/utils"
+import "github.com/m3ng9i/qreader/server"
 
 
 var _version_   = "v0.2"                // program version, from git tag

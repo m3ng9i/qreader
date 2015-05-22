@@ -3,9 +3,9 @@ package utils
 import "crypto/sha1"
 import "fmt"
 import "time"
-import "../global"
 import "github.com/microcosm-cc/bluemonday"
 import "github.com/m3ng9i/go-utils/timeslot"
+import "github.com/m3ng9i/qreader/global"
 
 
 func hash(s string) string {

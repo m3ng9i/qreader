@@ -8,8 +8,8 @@ import "encoding/json"
 import "github.com/go-martini/martini"
 import httphelper "github.com/m3ng9i/go-utils/http"
 import "github.com/m3ng9i/feedreader"
-import "../model"
-import "../utils"
+import "github.com/m3ng9i/qreader/model"
+import "github.com/m3ng9i/qreader/utils"
 
 
 /*

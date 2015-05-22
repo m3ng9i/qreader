@@ -3,8 +3,8 @@ package api
 import "net/http"
 import "fmt"
 import "encoding/json"
-import "../global"
 import httphelper "github.com/m3ng9i/go-utils/http"
+import "github.com/m3ng9i/qreader/global"
 
 
 // Result will be converted to json string and write to http.ResponseWriter.

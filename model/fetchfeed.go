@@ -5,10 +5,10 @@ import "fmt"
 import "time"
 import "strings"
 import "sync"
+import "github.com/go-xorm/xorm"
 import "github.com/m3ng9i/feedreader"
 import h "github.com/m3ng9i/go-utils/http"
-import "github.com/go-xorm/xorm"
-import "../global"
+import "github.com/m3ng9i/qreader/global"
 
 
 // Check if a feed url is already subscribed.
