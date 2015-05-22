@@ -24,7 +24,7 @@ var _buildTime_ = "0000-00-00 00:00"    // build time
 var Version = fmt.Sprintf("Version: %s, Branch: %s, Build: %s, Build time: %s",
         _version_, _branch_, _commitId_, _buildTime_)
 
-var _github_ = "https://github.com/m3ng9i/QReader"
+var _github_ = "https://github.com/m3ng9i/qreader"
 
 func usage() {
 s := `QReader: a browser-server based feed reader

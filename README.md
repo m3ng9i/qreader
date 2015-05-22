@@ -1,7 +1,7 @@
 QReader - a browser-server based feed reader
 ====================================================
 
-QReader 是一款使用 Go 和 Javscript 编写的阅读器，支持订阅 RSS 2.0 和 Atom 1.0 格式的 feed。Github地址：<https://github.com/m3ng9i/QReader>。
+QReader 是一款使用 Go 和 Javscript 编写的阅读器，支持订阅 RSS 2.0 和 Atom 1.0 格式的 feed。Github地址：<https://github.com/m3ng9i/qreader>。
 
 QReader 运行后，将开启 http 服务，可以使用电脑或手机上的浏览器访问 QReader。
 
@@ -50,7 +50,7 @@ QReader 程序分为服务器端与客户端两部分。服务器端负责抓取
 
 在命令行界面中运行以下命令下载并编译程序：
 
-    go get -d https://github.com/m3ng9i/qreader.git
+    go get -d github.com/m3ng9i/qreader
     cd `echo $GOPATH | cut -d ":" -f 1 | cut -d ";" -f 1`/src/github.com/m3ng9i/qreader
     chmod u+x build.py
     ./build.py
@@ -61,7 +61,7 @@ QReader 程序分为服务器端与客户端两部分。服务器端负责抓取
 
 如果你想图省事，也可以使用下面的命令完成源码下载和编译：
 
-    go get https://github.com/m3ng9i/qreader.git
+    go get github.com/m3ng9i/qreader
 
 使用此命令生成的可执行程序将会在 $GOPATH/bin 目录下生成，同样不会包含程序版本信息。
 
