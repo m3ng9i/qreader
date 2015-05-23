@@ -7,6 +7,8 @@ QReader 运行后，将开启 http 服务，可以使用电脑或手机上的浏
 
 QReader 是一个单用户的阅读器，不适合多人共同使用。
 
+[直接下载 QReader 可执行程序](https://github.com/m3ng9i/qreader/releases)。
+
 ## 0. 功能
 
 QReader 包含如下功能：
@@ -45,6 +47,8 @@ Android, Opera：
 ## 2. 安装与运行
 
 QReader 程序分为服务器端与客户端两部分。服务器端负责抓取 feed 并提供 http 服务。客户端需要通过浏览器访问，用来阅读与管理 feed。建议将 QReader 服务器安装在 PC 或 Mac 上，然后使用电脑、手机或平板上的浏览器访问 QReader 客户端。
+
+除了[直接下载](https://github.com/m3ng9i/qreader/releases)已编译好的可执行程序外，你也可以根据下面的说明自行编译 QReader。
 
 ### 2.1 编译
 
