@@ -3,7 +3,7 @@ QReader - a browser-server based feed reader
 
 ![QReader](images/qreader_on_phone.jpg)
 
-QReader 是一款使用 Go 和 Javscript 编写的阅读器，支持订阅 RSS 2.0 和 Atom 1.0 格式的 feed。Github地址：<https://github.com/m3ng9i/qreader>。
+QReader 是一款使用 Go 和 JavaScript 编写的阅读器，支持订阅 RSS 2.0 和 Atom 1.0 格式的 feed。Github地址：<https://github.com/m3ng9i/qreader>。
 
 为了运行 QReader ，你需要有一台 server，它可以是你放在局域网中的 PC。你需要在 server 上运行 QReader 服务端程序，然后使用手机、平板电脑或 server 上的浏览器访问 QReader。当然，如果你有兴趣，可以尝试把 QReader 编译到 Android、iOS 设备或路由器中。
 
