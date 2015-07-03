@@ -256,13 +256,35 @@ func Article() martini.Handler {
         }
         article.Read = true
 
+        // Get five ralated articles
+        related, err := model.GetRelatedArticles(id, 5)
+        if err != nil {
+            result.Error = ErrQueryDB
+            result.IntError = err
+            result.Response(w)
+            return
+        }
+
         utils.SanitizeSelf(&article.Name)
         utils.SanitizeSelf(&article.Author)
         utils.SanitizeSelf(&article.Title)
         utils.SanitizeSelf(&article.Content, true)
 
+        for i := range related {
+            utils.SanitizeSelf(&related[i].Name)
+            utils.SanitizeSelf(&related[i].Author)
+            utils.SanitizeSelf(&related[i].Title)
+        }
+
+        var t struct {
+            Article *model.Article `json:"article"`
+            Related []*model.Article `json:"related"`
+        }
+        t.Article = article
+        t.Related = related
+
         result.Success = true
-        result.Result = article
+        result.Result = t
         result.Response(w)
     }
 }
@@ -538,11 +560,17 @@ example:    /api/articles/tag/blog/10/100
 route:      starred
 path:       /api/articles/starred/{limit}/{offset}
 example:    /api/articles/starred/10/100
+
+route:      search
+path:       /api/articles/search/{limit}/{offset}?q={query}
+example:    /api/articles/search/10/100?q={query}
 */
 func ArticleList(route string) martini.Handler {
-    return func(w http.ResponseWriter, params martini.Params, rid httphelper.RequestId) {
+    return func(w http.ResponseWriter, r *http.Request, params martini.Params, rid httphelper.RequestId) {
         var result Result
         result.RequestId = rid
+
+        r.ParseForm()
 
         limit, err := strconv.Atoi(params["limit"])
         if err != nil || limit <= 0 {
@@ -594,6 +622,16 @@ func ArticleList(route string) martini.Handler {
 
         } else if route == "starred" {
             list ,err = model.GetStarredArticleList(limit, offset)
+
+        } else if route == "search" {
+            sq, err := model.Search(httphelper.QueryValue(r, "q"))
+            if err != nil {
+                result.Error = ErrSearchSyntaxError
+                result.IntError = err
+                result.Response(w)
+                return
+            }
+            list, err = sq.List(limit, offset)
 
         } else {
             result.Error = ErrUnexpectedError
@@ -886,3 +924,4 @@ func DeleteFeed() martini.Handler {
         return
     }
 }
+

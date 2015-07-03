@@ -12,6 +12,7 @@ QReader.api.articlesUnread      = QReader.apiroot + "articles/unread/";
 QReader.api.articlesFid         = QReader.apiroot + "articles/fid/";
 QReader.api.articlesTag         = QReader.apiroot + "articles/tag/";
 QReader.api.articlesStarred     = QReader.apiroot + "articles/starred/";
+QReader.api.articlesSearch      = QReader.apiroot + "articles/search/";
 QReader.api.article             = QReader.apiroot + "article/content/";
 QReader.api.markArticleRead     = QReader.apiroot + "article/read/";
 QReader.api.markArticleUnread   = QReader.apiroot + "article/unread/";
@@ -85,6 +86,12 @@ QReader.app.config(function($routeProvider, $httpProvider) {
 
     // /articles/starred?page={page}
     $routeProvider.when("/articles/starred", {
+        templateUrl: "/include/article_list.tpl.html",
+        controller: "ArticleListController"
+    });
+
+    // /articles/search?q={query}&page={page}
+    $routeProvider.when("/articles/search", {
         templateUrl: "/include/article_list.tpl.html",
         controller: "ArticleListController"
     });
@@ -263,6 +270,10 @@ QReader.app.controller("ArticleListController", function($location, $http, $rout
         route = "starred";
         QDoc.Init("加星文章");
 
+    } else if (url.match(/^\/articles\/search/)) {
+        route = "search";
+        QDoc.Init("搜索");
+
     } else {
         QDoc.SetError("路由错误");
         return
@@ -271,7 +282,7 @@ QReader.app.controller("ArticleListController", function($location, $http, $rout
     var tag = "";
     var limit = localStorage.pageItemNumber || QReader.defaultStorage.pageItemNumber;
 
-    if (route == "unread" || route == "fid" || route == "tag" || route == "starred") {
+    if (route == "unread" || route == "fid" || route == "tag" || route == "starred" || route == "search") {
         page = parseInt($location.search().page || 1);
         var offset = (page - 1) * limit;
 
@@ -279,7 +290,7 @@ QReader.app.controller("ArticleListController", function($location, $http, $rout
 
             request_url = QReader.api.articlesUnread + limit + "/" + offset;
 
-            $scope.pagelinkPrefix = "/#/articles/unread";
+            $scope.pagelinkPrefix = "/#/articles/unread?";
 
         } else if (route == "fid") {
 
@@ -291,7 +302,7 @@ QReader.app.controller("ArticleListController", function($location, $http, $rout
 
             request_url = QReader.api.articlesFid + fid + "/" + limit + "/" + offset;
 
-            $scope.pagelinkPrefix = "/#/articles/fid/" + fid;
+            $scope.pagelinkPrefix = "/#/articles/fid/" + fid + "?";
 
         } else if (route == "tag") {
 
@@ -305,13 +316,23 @@ QReader.app.controller("ArticleListController", function($location, $http, $rout
 
             request_url = QReader.api.articlesTag + tag + "/" + limit + "/" + offset;
 
-            $scope.pagelinkPrefix = "/#/articles/tag/" + tag;
+            $scope.pagelinkPrefix = "/#/articles/tag/" + tag + "?";
 
         } else if (route == "starred") {
 
             request_url = QReader.api.articlesStarred + limit + "/" + offset;
-            $scope.pagelinkPrefix = "/#/articles/starred";
+            $scope.pagelinkPrefix = "/#/articles/starred?";
 
+        } else if (route == "search") {
+
+            var query = $location.search().q || "";
+            if (query == "") {
+                QDoc.SetError("路由错误：query 值无效。");
+                return
+            }
+
+            request_url = QReader.api.articlesSearch + limit + "/" + offset + "?q=" + query;
+            $scope.pagelinkPrefix = "/#/articles/search?q=" + query + "&";
         }
     } else if (route == "random") {
         request_url = QReader.api.articlesRandom + "?n=" + limit;
@@ -322,7 +343,7 @@ QReader.app.controller("ArticleListController", function($location, $http, $rout
 
         // p or ctrl+left, command+left: turn to previous page.
         Mousetrap.bind(["mod+left", "p"], function() {
-            if (route == "unread" || route == "fid" || route == "tag" || route == "starred") {
+            if (route == "unread" || route == "fid" || route == "tag" || route == "starred" || route == "search") {
                 var page = parseInt($location.search().page || 1) - 1;
                 if (page <= 0) {
                     page = pagenum;
@@ -334,7 +355,7 @@ QReader.app.controller("ArticleListController", function($location, $http, $rout
 
         // n or ctrl+right, command+right: turn to next page.
         Mousetrap.bind(["mod+right", "n"], function() {
-            if (route == "unread" || route == "fid" || route == "tag" || route == "starred") {
+            if (route == "unread" || route == "fid" || route == "tag" || route == "starred" || route == "search") {
                 var page = parseInt($location.search().page || 1) + 1;
                 if (page > pagenum) {
                     page = 1;
@@ -348,7 +369,7 @@ QReader.app.controller("ArticleListController", function($location, $http, $rout
 
     $http.get(request_url).success(function(data) {
         if (data.success) {
-            if (route == "unread" || route == "fid" || route == "tag" || route == "starred") {
+            if (route == "unread" || route == "fid" || route == "tag" || route == "starred" || route == "search") {
                 data.result.page = page;
                 data.result.pagenum = Math.ceil(data.result.Number / limit);
             }
@@ -418,7 +439,9 @@ QReader.app.controller("ArticleListController", function($location, $http, $rout
             };
 
         } else {
-            if (data.error.errcode == 302) {
+            if (data.error.errcode == 103) {
+                QDoc.SetError("搜索指令语法错误");
+            } else if (data.error.errcode == 302) {
                 QDoc.SetError("没有找到可供阅读的文章");
             } else {
                 QDoc.SetError(data.error.errmsg);
@@ -458,10 +481,20 @@ QReader.app.controller("ArticleListController", function($location, $http, $rout
 });
 
 
-QReader.app.controller("NavController", function($scope, $route) {
+QReader.app.controller("NavController", function($scope, $route, $location) {
     // 刷新
     $scope.reload = function() {
         $route.reload();
+    };
+
+    $scope.search = function() {
+        var lastSearchQuery = localStorage.lastSearchQuery || QReader.defaultStorage.lastSearchQuery;
+        var query = window.prompt("请输入搜索指令：", lastSearchQuery);
+        if (query !== null && query != "") {
+            localStorage.lastSearchQuery = query;
+            $location.url("/articles/search/?q=" + encodeURIComponent(query));
+            $route.reload();
+        }
     };
 
     $scope.logout = function() {
@@ -709,9 +742,10 @@ QReader.app.controller("ArticleController", function($http, $scope, $routeParams
 
     $http.get(request_url).success(function(data) {
         if (data.success) {
-            QDoc.SetHtmlTitle(data.result.item_title);
+            data.result.related = data.result.related.slice(0, 3);
+            QDoc.SetHtmlTitle(data.result.article.item_title);
             $scope.data = data.result;
-            article_title = data.result.item_title;
+            article_title = data.result.article.item_title;
         } else {
             if (data.error.errcode == 302) {
                 QDoc.SetError("编号为" + $routeParams.id + "的文章并没有找到");
@@ -733,7 +767,7 @@ QReader.app.controller("ArticleController", function($http, $scope, $routeParams
 
         $http.put(request_url).success(function(data) {
             if (data.success) {
-                $scope.data.item_read = markread;
+                $scope.data.article.item_read = markread;
 
                 if (markread == false) {
                     QDoc.SetHtmlTitle("（未读）" + article_title);
@@ -754,7 +788,7 @@ QReader.app.controller("ArticleController", function($http, $scope, $routeParams
     $scope.markStarred = function(status) {
         QDoc.ClearError();
 
-        $scope.data.item_starred = status;
+        $scope.data.article.item_starred = status;
 
         var post = { "status": status, "ids": [parseInt($routeParams.id)]};
         $http.put(QReader.api.markArticlesStarred, post).success(function(data) {
@@ -767,7 +801,7 @@ QReader.app.controller("ArticleController", function($http, $scope, $routeParams
                 }
             }
         }).error(function() {
-            $scope.data.item_starred = !status;
+            $scope.data.article.item_starred = !status;
         });
     };
 });
@@ -864,6 +898,7 @@ QReader.defaultStorage = {
     "feedListOrderBy"       : "feed_id",
     "feedListOrderReverse"  : false,
     "authToken"             : "",
+    "lastSearchQuery"       : "",
 };
 
 

@@ -35,13 +35,13 @@
 
     <p data-ng-cloak class="ng-cloak">
         <span data-ng-hide="route=='random'">
-            <span data-ng-if="data.page > 1"><a href="{{pagelinkPrefix}}?page={{data.page-1}}">上一页</a></span>
-            <span data-ng-if="data.page <= 1"><a href="{{pagelinkPrefix}}?page={{data.pagenum}}">上一页</a></span>
+            <span data-ng-if="data.page > 1"><a href="{{pagelinkPrefix}}page={{data.page-1}}">上一页</a></span>
+            <span data-ng-if="data.page <= 1"><a href="{{pagelinkPrefix}}page={{data.pagenum}}">上一页</a></span>
         </span>
         <span data-ng-hide="route=='random'">第{{data.page}}页/共{{data.pagenum}}页/</span>共{{data.Number}}条
         <span data-ng-hide="route=='random'">
-            <span data-ng-if="data.page >= data.pagenum"><a href="{{pagelinkPrefix}}?page=1">下一页</a></span>
-            <span data-ng-if="data.page < data.pagenum"><a href="{{pagelinkPrefix}}?page={{data.page+1}}">下一页</a></span>
+            <span data-ng-if="data.page >= data.pagenum"><a href="{{pagelinkPrefix}}page=1">下一页</a></span>
+            <span data-ng-if="data.page < data.pagenum"><a href="{{pagelinkPrefix}}page={{data.page+1}}">下一页</a></span>
         </span>
     </p>
 </div>

@@ -25,7 +25,7 @@ QReader.ApiToken = function(authToken) {
     if (arguments.length > 0) {
         auth = authToken;
     } else {
-        var auth = localStorage.authToken || "";
+        auth = localStorage.authToken || "";
     }
     if (auth == "") {
         return "";

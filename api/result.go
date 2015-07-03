@@ -36,7 +36,6 @@ func (this *Result) Response(w http.ResponseWriter, rid ...httphelper.RequestId)
     }
 
     w.Header().Set("Content-Type", "application/json")
-    w.Header().Set("Access-Control-Allow-Origin", "*")
     w.WriteHeader(http.StatusOK) // always return status 200 even if an error occurs
     w.Write(b)
 

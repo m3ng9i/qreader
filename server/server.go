@@ -42,29 +42,30 @@ func recovery() martini.Handler {
 func createRouter() martini.Router {
     router := martini.NewRouter()
 
-    router.Get(     "/api/feed/list",                           api.FeedList())
-    router.Get(     "/api/feed/subscription",                   api.IsSubscribed())
-    router.Post(    "/api/feed/subscription",                   api.Subscribe())
-    router.Post(    "/api/feed/id/:id",                         api.Update())
-    router.Get(     "/api/feed/id/:id",                         api.FeedInfo())
-    router.Put(     "/api/feed/id/:id",                         api.UpdateFeedAndTags())
-    router.Delete(  "/api/feed/id/:id",                         api.DeleteFeed())
-    router.Get(     "/api/articles/random",                     api.RandomArticleList())
-    router.Get(     "/api/articles/unread/:limit/:offset",      api.ArticleList("unread"))
-    router.Get(     "/api/articles/fid/:fid/:limit/:offset",    api.ArticleList("fid"))
-    router.Get(     "/api/articles/tag/:tag/:limit/:offset",    api.ArticleList("tag"))
-    router.Get(     "/api/articles/starred/:limit/:offset",     api.ArticleList("starred"))
-    router.Put(     "/api/articles/read",                       api.MarkArticlesRead())
-    router.Put(     "/api/articles/starred",                    api.MarkArticlesStarred())
-    router.Get(     "/api/article/content/:id",                 api.Article())
-    router.Put(     "/api/article/read/:id",                    api.MarkReadStatus(true))   // mark read
-    router.Put(     "/api/article/unread/:id",                  api.MarkReadStatus(false))  // mark unread
-    router.Get(     "/api/tags/list",                           api.TagsList())
-    router.Get(     "/api/system/settings",                     api.Settings())
-    router.Put(     "/api/system/shutdown",                     api.CloseServer())
-    router.Get(     "/api/",                                    api.Status())               // do not need api token
-    router.Get(     "/api/checktoken",                          api.Status())               // check api token
-    router.Any(     "/api/**",                                  api.Default())
+    router.Get(     "/api/feed/list",                               api.FeedList())
+    router.Get(     "/api/feed/subscription",                       api.IsSubscribed())
+    router.Post(    "/api/feed/subscription",                       api.Subscribe())
+    router.Post(    "/api/feed/id/:id",                             api.Update())
+    router.Get(     "/api/feed/id/:id",                             api.FeedInfo())
+    router.Put(     "/api/feed/id/:id",                             api.UpdateFeedAndTags())
+    router.Delete(  "/api/feed/id/:id",                             api.DeleteFeed())
+    router.Get(     "/api/articles/random",                         api.RandomArticleList())
+    router.Get(     "/api/articles/unread/:limit/:offset",          api.ArticleList("unread"))
+    router.Get(     "/api/articles/fid/:fid/:limit/:offset",        api.ArticleList("fid"))
+    router.Get(     "/api/articles/tag/:tag/:limit/:offset",        api.ArticleList("tag"))
+    router.Get(     "/api/articles/starred/:limit/:offset",         api.ArticleList("starred"))
+    router.Get(     "/api/articles/search/:limit/:offset",          api.ArticleList("search"))
+    router.Put(     "/api/articles/read",                           api.MarkArticlesRead())
+    router.Put(     "/api/articles/starred",                        api.MarkArticlesStarred())
+    router.Get(     "/api/article/content/:id",                     api.Article())
+    router.Put(     "/api/article/read/:id",                        api.MarkReadStatus(true))   // mark read
+    router.Put(     "/api/article/unread/:id",                      api.MarkReadStatus(false))  // mark unread
+    router.Get(     "/api/tags/list",                               api.TagsList())
+    router.Get(     "/api/system/settings",                         api.Settings())
+    router.Put(     "/api/system/shutdown",                         api.CloseServer())
+    router.Get(     "/api/",                                        api.Status())               // do not need api token
+    router.Get(     "/api/checktoken",                              api.Status())               // check api token
+    router.Any(     "/api/**",                                      api.Default())
 
     return router
 }

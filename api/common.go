@@ -25,6 +25,7 @@ func (this *ApiError) Error() string {
 var ErrTokenInvalid         = ApiError{100, "Client token is invalid. Please make sure you have the permission to use QReader."}
 var ErrRequestNotAllowd     = ApiError{101, "The request is not allowed."}
 var ErrBadRequest           = ApiError{102, "Request query or post data not correct."}
+var ErrSearchSyntaxError    = ApiError{103, "Search syntax not correct."}
 var ErrFetchError           = ApiError{200, "Error occurs when fetching feed. Please check the internet connection and make sure the feed's url is valid."}
 var ErrParseError           = ApiError{201, "Error occurs when parsing feed. Please check if the feed is valid."}
 var ErrQueryDB              = ApiError{300, "Error occurs when querying the database."}

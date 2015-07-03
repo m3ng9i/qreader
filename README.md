@@ -11,6 +11,23 @@ QReader 是一个单用户的阅读器，不适合多人共同使用。
 
 [直接下载 QReader 可执行程序](https://github.com/m3ng9i/qreader/releases)。
 
+最新版本：v0.2.1
+
+## 更新说明
+
+- 2015-07-03  v0.2.1 发布。新增搜索功能；文章页增加其他文章链接。
+- 2015-05-22  v0.2 发布
+
+## 更新方式
+
+1. 关闭 QReader；
+2. 备份 `sitedata` 目录下的 `feed.db` 文件；
+3. 重新[下载](https://github.com/m3ng9i/qreader/releases) QReader 可执行程序和 `sitedata` 文件，将压缩包解压缩；
+4. 将之前备份的 `feed.db` 文件放回到更新后的 `sitedata` 目录下；
+5. 重新启动 QReader。
+
+注意：在更新程序及 `sitedata` 后不要进行初始化，否则你的历史订阅数据将会被清空。
+
 ## 0. 功能
 
 QReader 包含如下功能：
@@ -25,6 +42,7 @@ QReader 包含如下功能：
 - 设置登录密码
 - 与 QReader 服务器通讯的数据可以开启 TLS 加密
 - 支持使用 Socks5 代理服务器抓取 feed
+- 文章搜索
 
 ## 1. 截图
 
@@ -178,7 +196,54 @@ b                               | 页面底部
 ctrl+left, command+left 或 p    | 上一页
 ctrl+right, command+right 或 n  | 下一页
 
-## 3. 技术规格
+## 3. 文章搜索
+
+点击顶部菜单中的“搜索”，可以根据关键词、feed id、tag、已读状态、加星状态进行搜索，可以设置排序字段和排序方式，可以设置返回结果数量。
+
+## 3.1 搜索语法
+
+搜索指令语法：`[<条件>:]<值>[,<值>,...]`
+
+搜索指令包括“条件”和“值”，两者之间使用英文冒号分隔，多个搜索指令之间使用空格分隔，例如：`tag:news starred:true` 会搜索所有标签为 “news”，且已加星的文章。
+
+“条件”项可以使用以下字段：
+
+条件     | 说明
+---------|----------------
+fid      | feed id，数字
+keyword  | 关键词，表示从文章标题和文章内容中进行搜索
+title    | 从文章标题中进行搜索
+content  | 从文章内容中进行搜索
+read     | [any|true|false]，文章已读状态，any 表示任意文章，true 表示已读文章，false 表示未读文章，默认为 false。
+orderby  | 排序字段，默认为id
+order    | [asc|desc]，排序方式，默认为 desc（倒序）
+tag      | feed 标签
+starred  | [any|true|false]，文章加星状态，any表示任意文章，true表示已加星文章，false表示未加星文章，默认为 any。
+num      | 每页显示的结果数量，数字，默认为系统配置中设置的“每页条目数量”。
+
+条件字段可以省略，如果省略，表示输入的为 `keyword` 条件的值。
+
+`fid`、`keyword`、`title`、`content` 的值可以提供多个，相同的条件的多个值之间为“或”的关系，不同条件之间为“且”的关系。
+
+当值中包含空格或符号时，需要用引号将值括起来，例如：keyword:"value1 value2"
+
+多个值之间用英文逗号分隔：keyword:value1,value2
+
+## 3.2 搜索举例
+
+查找 feed id 为 15，标题中包含“编程”的未读文章：
+
+    fid:15 title:编程
+
+查找文章内容为“Go”或“JavaScript”的已加星文章，每页显示20个结果：
+
+    content:Go,JavaScript starred:true num:20
+
+查找标题或内容包含“linux”的文章，根据文章id和fid正序排序：
+
+    linux order:asc orderby:id,fid
+
+## 4. 技术规格
 
 - 开发语言：Go、JavaScript
 - 数据库：SQLite3

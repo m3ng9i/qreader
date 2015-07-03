@@ -373,10 +373,90 @@ func GetArticleListByTag(tag string, limit, offset int) (list ArticleList, err e
 }
 
 
+/*
+Get related articles by article id.
+
+Parameters:
+    id  if of an article
+    n   results to return.
+*/
+func GetRelatedArticles(id int64, n int) (list []*Article, err error) {
+
+    if n <= 0 {
+        err = fmt.Errorf("Parameter n cannot equal or lesser than zero.")
+        return
+    }
+
+    session := global.Orm.NewSession()
+    defer session.Close()
+
+    err = session.Begin()
+    if err != nil {
+        return
+    }
+
+    var ok bool
+
+    // 1. Get fid of the article.
+    item := new(Item)
+    ok, err = session.Cols("Fid").Where("Id = ?", id).Get(item)
+    if err != nil {
+        return
+    }
+    fid := item.Fid
+
+    // 2. Get articles which Fid = fid
+    if ok {
+        // BUG: Omit("Item.Content") doesn't work, still select all columns, waiting xorm team to fix it.
+        // opened an issue at: https://github.com/go-xorm/xorm/issues/222
+        err = session.Omit("Item.Content").Table("Item").Join("INNER", "Feed", "Item.Fid=Feed.Id").
+                And("Item.Fid = ?", fid).And("Item.Id != ?", id).And("Item.Read=0").Limit(n, 0).Find(&list)
+        if err != nil {
+            return
+        }
+    }
+
+    n = n - len(list)
+
+    // 3. Get random articles
+    if n > 0 {
+
+        var articles []*Article
+
+        // BUG: Omit("Item.Content") doesn't work, still select all columns, waiting xorm team to fix it.
+        // opened an issue at: https://github.com/go-xorm/xorm/issues/222
+        err = session.Omit("Item.Content").Table("Item").Join("INNER", "Feed", "Item.Fid=Feed.Id").
+            And("Item.Read=0").And("Feed.Id != ?", fid).OrderBy("RANDOM()").Limit(n).Find(&articles)
+        if err != nil {
+            return
+        }
+
+        list = append(list, articles...)
+    }
+
+    session.Commit()
+    return
+}
+
+
 // Get feed ids by tag name.
 func getFeedIdsByTag(session *xorm.Session, tag string) (fids []int64, err error) {
     var t []*Tag
     err = session.Cols("Fid").Where("Name = ?", tag).Find(&t)
+    if err != nil {
+        return
+    }
+    for _, i := range t {
+        fids = append(fids, i.Fid)
+    }
+    return
+}
+
+
+// Get feed ids by tags.
+func getFeedIdsByTags(session *xorm.Session, tags []string) (fids []int64, err error) {
+    var t []*Tag
+    err = session.Cols("Fid").In("Name", tags).Find(&t)
     if err != nil {
         return
     }

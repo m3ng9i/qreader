@@ -51,10 +51,7 @@
 
 #container article > div.content {
     font-size: 1em;
-}
-
-#container article > div.content {
-    line-height: 1.5em;
+    line-height: 1.7em;
 }
 
 #container article > div.content img {
@@ -69,6 +66,19 @@
 #container div.article_list li {
     font-size: 1em;
     line-height: 1.4em;
+}
+
+#related_articles {
+    margin:1.5em 0;
+}
+
+#related_articles h1 {
+    font-size: 1em;
+}
+
+#related_articles li {
+    font-size: 0.9em;
+    margin:0.6em 0;
 }
 
 #container > footer {
@@ -200,7 +210,7 @@
     }
 }
 
-@media screen and (max-width: 680px) {
+@media screen and (max-width: 750px) {
     /* hide lastfetch column */
     #feedlist table tr > *:nth-child(6) {
         display: none;
