@@ -21,9 +21,9 @@ QReader 是一个单用户的阅读器，不适合多人共同使用。
 ## 更新方式
 
 1. 关闭 QReader；
-2. 备份 `sitedata` 目录下的 `feed.db` 文件；
+2. 备份 `sitedata` 目录下的 `feed.db` 和 `config.ini` 文件；
 3. 重新[下载](https://github.com/m3ng9i/qreader/releases) QReader 可执行程序和 `sitedata` 文件，将压缩包解压缩；
-4. 将之前备份的 `feed.db` 文件放回到更新后的 `sitedata` 目录下；
+4. 将之前备份的 `feed.db` 和 `config.ini` 文件放回到更新后的 `sitedata` 目录下；
 5. 重新启动 QReader。
 
 注意：在更新程序及 `sitedata` 后不要进行初始化，否则你的历史订阅数据将会被清空。
@@ -214,20 +214,20 @@ fid      | feed id，数字
 keyword  | 关键词，表示从文章标题和文章内容中进行搜索
 title    | 从文章标题中进行搜索
 content  | 从文章内容中进行搜索
-read     | [any|true|false]，文章已读状态，any 表示任意文章，true 表示已读文章，false 表示未读文章，默认为 false。
+read     | 文章已读状态，any 表示任意文章，true 表示已读文章，false 表示未读文章，默认为 false。
 orderby  | 排序字段，默认为id
-order    | [asc|desc]，排序方式，默认为 desc（倒序）
+order    | 排序方式，asc 表示正序，desc 表示逆序。默认为 desc。
 tag      | feed 标签
-starred  | [any|true|false]，文章加星状态，any表示任意文章，true表示已加星文章，false表示未加星文章，默认为 any。
+starred  | 文章加星状态，any 表示任意文章，true 表示已加星文章，false 表示未加星文章，默认为 any。
 num      | 每页显示的结果数量，数字，默认为系统配置中设置的“每页条目数量”。
 
 条件字段可以省略，如果省略，表示输入的为 `keyword` 条件的值。
 
 `fid`、`keyword`、`title`、`content` 的值可以提供多个，相同的条件的多个值之间为“或”的关系，不同条件之间为“且”的关系。
 
-当值中包含空格或符号时，需要用引号将值括起来，例如：keyword:"value1 value2"
+当值中包含空格或符号时，需要用引号将值括起来，例如：`keyword:"value1 value2"`
 
-多个值之间用英文逗号分隔：keyword:value1,value2
+多个值之间用英文逗号分隔：`keyword:value1,value2`
 
 ## 3.2 搜索举例
 
