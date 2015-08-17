@@ -225,7 +225,7 @@ type Article struct {
 
 type ArticleList struct {
     Articles []*Article `xorm:"extends"`
-    Number int64
+    Number int64 // amount of all articles
 }
 
 

@@ -325,13 +325,13 @@ QReader.app.controller("ArticleListController", function($location, $http, $rout
 
         } else if (route == "search") {
 
-            var query = $location.search().q || "";
+            var query = encodeURIComponent($location.search().q || "");
             if (query == "") {
                 QDoc.SetError("路由错误：query 值无效。");
                 return
             }
 
-            request_url = QReader.api.articlesSearch + limit + "/" + offset + "?q=" + query;
+            request_url = QReader.api.articlesSearch + limit + "?q=" + query + "&page=" + page;
             $scope.pagelinkPrefix = "/#/articles/search?q=" + query + "&";
         }
     } else if (route == "random") {
@@ -371,6 +371,7 @@ QReader.app.controller("ArticleListController", function($location, $http, $rout
         if (data.success) {
             if (route == "unread" || route == "fid" || route == "tag" || route == "starred" || route == "search") {
                 data.result.page = page;
+                limit = data.result.limit || limit; // result of api.SearchList() contains a variable named limit
                 data.result.pagenum = Math.ceil(data.result.Number / limit);
             }
             $scope.data = data.result;
@@ -516,7 +517,7 @@ QReader.app.controller("FeedListController", function($http, $scope, $route, $lo
     }
 
     var subscriptionRequestUrl = function(feedurl) {
-        var url = QReader.api.subscription + "?url=" + feedurl;
+        var url = QReader.api.subscription + "?url=" + encodeURIComponent(feedurl);
         return url;
     }
 

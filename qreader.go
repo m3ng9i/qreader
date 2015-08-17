@@ -16,7 +16,7 @@ import "github.com/m3ng9i/qreader/utils"
 import "github.com/m3ng9i/qreader/server"
 
 
-var _version_   = "v0.2.1"              // program version, from git tag
+var _version_   = "v0.2.2"              // program version, from git tag
 var _branch_    = "unknown"             // git branch
 var _commitId_  = "0000000"             // git commit id
 var _buildTime_ = "0000-00-00 00:00"    // build time

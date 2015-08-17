@@ -333,7 +333,7 @@ func Search(q string) (sq SearchQuery, err error) {
 
 
 // Get article list of search query.
-func (this *SearchQuery) List(limit, offset int) (list ArticleList, err error) {
+func (this *SearchQuery) List(page int) (list ArticleList, err error) {
 
     session := global.Orm.NewSession()
     defer session.Close()
@@ -443,11 +443,13 @@ func (this *SearchQuery) List(limit, offset int) (list ArticleList, err error) {
         sql += " " + s
     }
 
-    if this.Num != nil && *this.Num > 0 {
-        limit = *this.Num
+    if this.Num == nil {
+        err = fmt.Errorf("'num' not provide for search query.")
+        session.Rollback()
+        return
     }
 
-    sql = fmt.Sprintf("%s limit %d, %d", sql, offset, limit)
+    sql = fmt.Sprintf("%s limit %d, %d", sql, (page - 1) * *this.Num, *this.Num)
 
     err = session.Sql(sql).Find(&list.Articles)
 

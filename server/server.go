@@ -54,7 +54,7 @@ func createRouter() martini.Router {
     router.Get(     "/api/articles/fid/:fid/:limit/:offset",        api.ArticleList("fid"))
     router.Get(     "/api/articles/tag/:tag/:limit/:offset",        api.ArticleList("tag"))
     router.Get(     "/api/articles/starred/:limit/:offset",         api.ArticleList("starred"))
-    router.Get(     "/api/articles/search/:limit/:offset",          api.ArticleList("search"))
+    router.Get(     "/api/articles/search/:deflimit",               api.SearchList())
     router.Put(     "/api/articles/read",                           api.MarkArticlesRead())
     router.Put(     "/api/articles/starred",                        api.MarkArticlesStarred())
     router.Get(     "/api/article/content/:id",                     api.Article())

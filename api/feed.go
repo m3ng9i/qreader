@@ -560,10 +560,6 @@ example:    /api/articles/tag/blog/10/100
 route:      starred
 path:       /api/articles/starred/{limit}/{offset}
 example:    /api/articles/starred/10/100
-
-route:      search
-path:       /api/articles/search/{limit}/{offset}?q={query}
-example:    /api/articles/search/10/100?q={query}
 */
 func ArticleList(route string) martini.Handler {
     return func(w http.ResponseWriter, r *http.Request, params martini.Params, rid httphelper.RequestId) {
@@ -623,16 +619,6 @@ func ArticleList(route string) martini.Handler {
         } else if route == "starred" {
             list ,err = model.GetStarredArticleList(limit, offset)
 
-        } else if route == "search" {
-            sq, err := model.Search(httphelper.QueryValue(r, "q"))
-            if err != nil {
-                result.Error = ErrSearchSyntaxError
-                result.IntError = err
-                result.Response(w)
-                return
-            }
-            list, err = sq.List(limit, offset)
-
         } else {
             result.Error = ErrUnexpectedError
             result.IntError = fmt.Errorf(ErrUnexpectedError.ErrMsg)
@@ -661,6 +647,85 @@ func ArticleList(route string) martini.Handler {
 
         result.Success = true
         result.Result = list
+        result.Response(w)
+    }
+}
+
+
+/*
+Article list of search result.
+
+path:       /api/articles/search/{deflimit}?q={query}&page={page}
+example:    /api/articles/search/10?q=num:20&page=10
+*/
+func SearchList() martini.Handler {
+
+    return func(w http.ResponseWriter, r *http.Request, params martini.Params, rid httphelper.RequestId) {
+        var result Result
+        result.RequestId = rid
+
+        r.ParseForm()
+
+        var limit, page int
+
+        l, _ := strconv.ParseInt(params["deflimit"], 10, 0)
+        p, _ := strconv.ParseInt(httphelper.QueryValue(r, "page", "0"), 10, 0)
+        limit = int(l)
+        page = int(p)
+
+        if limit <= 0 {
+            result.Error = ErrBadRequest
+            result.IntError = fmt.Errorf("Parameter 'limit' not correct.")
+            result.Response(w)
+            return
+        }
+
+        if page <= 0 {
+            page = 1
+        }
+
+        sq, err := model.Search(httphelper.QueryValue(r, "q"))
+        if err != nil {
+            result.Error = ErrSearchSyntaxError
+            result.IntError = err
+            result.Response(w)
+            return
+        }
+
+        if sq.Num == nil {
+            sq.Num = &limit
+        }
+
+        list, err := sq.List(page)
+        if err != nil {
+            result.Error = ErrQueryDB
+            result.IntError = err
+            result.Response(w)
+            return
+        }
+
+        if len(list.Articles) == 0 {
+            result.Error = ErrNoResultsFound
+            result.IntError = fmt.Errorf(ErrNoResultsFound.Error())
+            result.Response(w)
+            return
+        }
+
+        for i, _ := range list.Articles {
+            utils.SanitizeSelf(&list.Articles[i].Name)
+            utils.SanitizeSelf(&list.Articles[i].Author)
+            utils.SanitizeSelf(&list.Articles[i].Title)
+        }
+
+        var t struct {
+            model.ArticleList
+            Limit int `json:"limit"` // used for paging
+        }
+        t.ArticleList = list
+        t.Limit = *sq.Num
+
+        result.Success = true
+        result.Result = t
         result.Response(w)
     }
 }
