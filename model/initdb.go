@@ -55,8 +55,6 @@ create table if not exists 'Tag' (
 const createIndexesSql = `
 create unique index if not exists i_feed_url on Feed(Feedurl);
 
-create unique index if not exists i_item_url on Item(Url);
-
 create unique index if not exists i_item_combine_guid on Item(Fid, Guid);
 
 create unique index if not exists i_tag_combine_name_fid on Tag(Name, Fid);
