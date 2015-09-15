@@ -100,7 +100,7 @@ func initDatabase() {
 func initConfigIni() {
     err := global.CreateConfigIni()
     if err != nil {
-        fmt.Fprintln(os.Stderr, "Error occurs when initializing config.ini: %s\n", err.Error())
+        fmt.Fprintf(os.Stderr, "Error occurs when initializing config.ini: %s\n", err.Error())
         os.Exit(1)
     } else {
         fmt.Println("config.ini initialized.")
