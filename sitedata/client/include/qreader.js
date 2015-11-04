@@ -497,11 +497,6 @@ QReader.app.controller("NavController", function($scope, $route, $location) {
             $route.reload();
         }
     };
-
-    $scope.logout = function() {
-        localStorage.authToken = "";
-        window.location.href = "/login.html";
-    };
 });
 
 
@@ -845,6 +840,11 @@ QReader.app.controller("SettingsController", function($http, $scope, QDoc) {
             var request_url = QReader.api.shutdown;
             $http.put(request_url);
         }
+    };
+
+    $scope.logout = function() {
+        localStorage.authToken = "";
+        window.location.href = "/login.html";
     };
 });
 
