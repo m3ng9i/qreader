@@ -104,7 +104,7 @@ func loadConfig(filename string) error {
         if len(IPs) == 0 {
             return fmt.Errorf("Cannot get IP address.\n")
         }
-    } else if len(IPs) == 0 {
+    } else if len(ip) == 0 {
         IPs = []string{"127.0.0.1"}
     } else {
         IPs, err = parseIP(ip)
