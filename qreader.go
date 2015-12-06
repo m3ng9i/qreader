@@ -8,6 +8,7 @@ import "fmt"
 import "strings"
 import "net/http"
 import "syscall"
+import "sync"
 import "path/filepath"
 import "github.com/toqueteos/webbrowser"
 import "github.com/m3ng9i/qreader/global"
@@ -209,12 +210,11 @@ func main() {
         os.Exit(0)
     }
 
-    addr := fmt.Sprintf("%s:%d", global.IP, global.Port)
-    url := ""
+    scheme := ""
     if global.Usetls {
-        url = "https://" + addr
+        scheme = "https://"
     } else {
-        url = "http://" + addr
+        scheme = "http://"
     }
 
     catchSignal()
@@ -222,7 +222,9 @@ func main() {
     server.Init()
 
     global.Logger.Infof("QReader %s.", Version)
-    global.Logger.Infof("QReader is running. Open %s in your browser to use.", url)
+    for _, ip := range global.IPs {
+        global.Logger.Infof("QReader is running at: %s%s:%d", scheme, ip, global.Port)
+    }
 
     // Auto update feed. Feed will be updated every 120 minutes (2 hours) default.
     model.AutoUpdateFeed(120)
@@ -230,7 +232,7 @@ func main() {
     if open {
         go func() {
             <- time.After(500 * time.Millisecond)
-            err = webbrowser.Open(url)
+            err = webbrowser.Open(fmt.Sprintf("%s127.0.0.1:%d", scheme, global.Port))
             if err != nil {
                 global.Logger.Error(err)
                 err = nil
@@ -238,13 +240,24 @@ func main() {
         }()
     }
 
-    if global.Usetls {
-        err = http.ListenAndServeTLS(addr, global.PathCertPem, global.PathKeyPem, server.Mux)
-    } else {
-        err = http.ListenAndServe(addr, server.Mux)
+    var wg sync.WaitGroup
+
+    for _, ip := range global.IPs {
+        addr := fmt.Sprintf("%s:%d", ip, global.Port)
+        wg.Add(1)
+        go func(addr string) {
+
+            if global.Usetls {
+                err = http.ListenAndServeTLS(addr, global.PathCertPem, global.PathKeyPem, server.Mux)
+            } else {
+                err = http.ListenAndServe(addr, server.Mux)
+            }
+            if err != nil {
+                fmt.Fprintf(os.Stderr, err.Error())
+                os.Exit(1)
+            }
+        }(addr)
     }
-    if err != nil {
-        fmt.Fprintf(os.Stderr, err.Error())
-        os.Exit(1)
-    }
+
+    wg.Wait()
 }
