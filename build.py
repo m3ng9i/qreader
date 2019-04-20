@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import os, time, subprocess
+import os, time, subprocess, sys
 
 def runCmd(cmd):
     p = subprocess.Popen(cmd, shell = True, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
@@ -25,20 +25,25 @@ def buildCmd():
 
     version = lastTag()
     if version != "":
-        buildFlag.append("-X main._version_ '{}'".format(version))
+        buildFlag.append("-X 'main._version_={}'".format(version))
 
-    branchName = branch()        
+    branchName = branch()
     if branchName != "":
-        buildFlag.append("-X main._branch_ '{}'".format(branchName))
+        buildFlag.append("-X 'main._branch_={}'".format(branchName))
 
     commitId = lastCommitId()
     if commitId != "":
-        buildFlag.append("-X main._commitId_ '{}'".format(commitId))
+        buildFlag.append("-X 'main._commitId_={}'".format(commitId))
 
     # current time
-    buildFlag.append("-X main._buildTime_ '{}'".format(time.strftime("%Y-%m-%d %H:%M %z")))
+    buildFlag.append("-X 'main._buildTime_={}'".format(time.strftime("%Y-%m-%d %H:%M %z")))
 
     return 'go build -ldflags "{}"'.format(" ".join(buildFlag))
 
-if subprocess.call(buildCmd(), shell = True) == 0:
+cmd = buildCmd()
+
+if len(sys.argv) > 1 and sys.argv[1] == "-showcmd":
+    print(cmd)
+elif subprocess.call(cmd, shell = True) == 0:
     print("build finished.")
+

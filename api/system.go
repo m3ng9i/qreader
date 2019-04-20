@@ -16,7 +16,7 @@ func Settings() martini.Handler {
         data["ConfigFile"]  = global.ConfigFile
         data["PathRoot"]    = global.PathRoot
         data["PathDB"]      = global.PathDB
-        data["IP"]          = global.IP
+        data["IPs"]         = global.IPs
         data["Port"]        = global.Port
         data["Usetls"]      = global.Usetls
         data["UseProxy"]    = global.UseProxy

@@ -826,6 +826,7 @@ QReader.app.controller("SettingsController", function($http, $scope, QDoc) {
         if (data.success) {
             $scope.status = "QReader api服务正常运行";
             $scope.data = data.result;
+            $scope.data.IPs = data.result.SystemInfo.IPs.join(", ")
             $scope.token = QReader.ApiToken();
             initSettings();
         } else {

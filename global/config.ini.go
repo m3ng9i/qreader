@@ -8,8 +8,12 @@ import "runtime"
 
 
 var defaultConfigIni = `
-# Listen IP address of http server. Example: 127.0.0.1, 192.168.1.123, 0.0.0.0 or lan.
-# If is auto, QReader will get the sever's IP Automaticly.
+# Listen IP address of http server. Two or more IPs are separated by comma.
+# If ip is auto, QReader will get the sever's IP Automaticly.
+# Example:
+#   ip = 127.0.0.1,192.168.1.123
+#   ip = 0.0.0.0
+#   ip = auto
 ip = auto
 
 # Listen port of http server

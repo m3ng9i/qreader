@@ -38,7 +38,7 @@ var PathKeyPem      string          // Path of key.pem
 
 var ConfigFile      string          // path of config file
 
-var IP              string              // IP of http server
+var IPs             []string            // IPs of http server
 var Port            uint                // Port of http server
 var Usetls          bool                // Set to true to use https, set to false to use http
 var Password        string              // Password to log into QReader
@@ -95,17 +95,22 @@ func loadConfig(filename string) error {
         return fmt.Errorf("Cannot open config file: %s\n", filename)
     }
 
-    IP = c.MustValue("", "ip")
-    if IP == "auto" {
-        IP, err = getIPAutomaticly()
+    ip := c.MustValue("", "ip")
+    if ip == "auto" {
+        IPs, err = getIPAutomaticly()
         if err != nil {
             return err
         }
-        if IP == "" {
+        if len(IPs) == 0 {
             return fmt.Errorf("Cannot get IP address.\n")
         }
-    } else if IP == "" {
-        IP = "127.0.0.1"
+    } else if len(ip) == 0 {
+        IPs = []string{"127.0.0.1"}
+    } else {
+        IPs, err = parseIP(ip)
+        if err != nil {
+            return err
+        }
     }
 
     Port = uint(c.MustInt("", "port"))
@@ -154,26 +159,68 @@ func loadConfig(filename string) error {
 }
 
 
-// Get first IPv4 address in system's network interface.
-// This may be a Lan IP or a public IP.
-func getIPAutomaticly() (a string, e error) {
-    addr, e := net.InterfaceAddrs()
-    if e != nil {
+// Get all available IPv4 addresses in system's network interface.
+func getIPAutomaticly() (ip []string, e error) {
+    iface, err := net.Interfaces()
+    if err != nil {
+        e = err
         return
     }
-    for _, i := range addr {
-        ip := net.ParseIP(strings.SplitN(i.String(), "/", 2)[0])
-        ipString := ip.String()
-        if ip.To4() != nil && !ip.IsLoopback() && ipString != "0.0.0.0" {
-            a = ipString
-            goto END
+
+    for _, i := range iface {
+        addrs, err := i.Addrs()
+        if e != nil {
+            e = err
+            return
+        }
+        for _, a := range addrs {
+            add := net.ParseIP(strings.SplitN(a.String(), "/", 2)[0])
+            if add.To4() != nil {
+                ip = append(ip, add.String())
+            }
         }
     }
 
-    END:
-    if a == "" {
-        a = "127.0.0.1"
+    for _, i := range ip {
+        if i == "127.0.0.1" {
+            return
+        }
     }
+
+    // add loopback
+    ip = append(ip, "127.0.0.1")
+
+    return
+}
+
+
+// parse ip string, add is like "127.0.0,1,192.168.0.1"
+func parseIP(add string) (ip []string, e error) {
+    for _, i := range strings.Split(add, ",") {
+        i := strings.TrimSpace(i)
+        a := net.ParseIP(i)
+        if a == nil || a.To4() == nil {
+            e = fmt.Errorf("%s is not valid IPv4 address.", i)
+            return
+        }
+        i = a.String()
+        if i == "0.0.0.0" {
+            ip = []string{"0.0.0.0"}
+            return
+        } else {
+            ip = append(ip, i)
+        }
+    }
+
+    for _, i := range ip {
+        if i == "127.0.0.1" {
+            return
+        }
+    }
+
+    // add loopback
+    ip = append(ip, "127.0.0.1")
+
     return
 }
 
@@ -233,7 +280,7 @@ func Init2() {
         }
 
         if Debug {
-            Orm.ShowSQL = true
+            Orm.ShowSQL(true)
         }
 
         // create logger
