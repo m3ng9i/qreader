@@ -25,18 +25,18 @@ def buildCmd():
 
     version = lastTag()
     if version != "":
-        buildFlag.append("-X main._version_ '{}'".format(version))
+        buildFlag.append("-X 'main._version_={}'".format(version))
 
     branchName = branch()
     if branchName != "":
-        buildFlag.append("-X main._branch_ '{}'".format(branchName))
+        buildFlag.append("-X 'main._branch_={}'".format(branchName))
 
     commitId = lastCommitId()
     if commitId != "":
-        buildFlag.append("-X main._commitId_ '{}'".format(commitId))
+        buildFlag.append("-X 'main._commitId_={}'".format(commitId))
 
     # current time
-    buildFlag.append("-X main._buildTime_ '{}'".format(time.strftime("%Y-%m-%d %H:%M %z")))
+    buildFlag.append("-X 'main._buildTime_={}'".format(time.strftime("%Y-%m-%d %H:%M %z")))
 
     return 'go build -ldflags "{}"'.format(" ".join(buildFlag))
 
