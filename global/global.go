@@ -280,7 +280,7 @@ func Init2() {
         }
 
         if Debug {
-            Orm.ShowSQL = true
+            Orm.ShowSQL(true)
         }
 
         // create logger
